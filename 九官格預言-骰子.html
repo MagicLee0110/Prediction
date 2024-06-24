@@ -37,34 +37,25 @@
     }
 
     .customContent {
-        width: 100%;
-        height: 100%;
-        display: none;
-        justify-content: center;
-        align-items: center;
-        font-size: 2em;
-    }
-
-    .card-cell {
-        background-color: #f0f0f0; /* 卡片背景顏色 */
-        border-radius: 10px; /* 圓角 */
+        width: 80%; /* 調整寬度 */
+        max-width: 400px; /* 最大寬度限制 */
+        height: auto; /* 高度自適應 */
         padding: 20px; /* 內邊距 */
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 陰影效果 */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 2em;
-        position: relative; /* 相對定位，用於添加內容 */
+        background-color: #fff; /* 背景顏色 */
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 陰影效果 */
+        border-radius: 8px; /* 圓角 */
+        text-align: center; /* 文字居中 */
+        display: none; /* 初始隱藏 */
+        position: absolute; /* 絕對定位 */
+        top: 50%; /* 與父元素垂直居中 */
+        left: 50%; /* 與父元素水平居中 */
+        transform: translate(-50%, -50%); /* 居中定位 */
+        z-index: 1000; /* 提高層級 */
     }
 
-    .card-cell::after {
-        content: "預言卡片"; /* 在卡片內容後加上文字 */
-        position: absolute; /* 絕對定位 */
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%); /* 將內容置中 */
-        font-size: 0.8em;
-        color: #666;
+    .visible-cell {
+        display: flex !important;
+        color: initial !important;
     }
 </style>
 </head>
@@ -74,7 +65,7 @@
         <div class="cell" onclick="showCustomContent(2)">2</div>
         <div class="cell" onclick="showCustomContent(3)">3</div>
         <div class="cell" onclick="showCustomContent(4)">4</div>
-        <div class="cell card-cell" onclick="showCustomContent(5)"></div> <!-- 添加 card-cell 類別 -->
+        <div class="cell visible-cell" onclick="showCustomContent(5)">點擊已開啟卡片</div> <!-- 添加 visible-cell 類別 -->
         <div class="cell" onclick="showCustomContent(6)">6</div>
         <div class="cell" onclick="showCustomContent(7)">7</div>
         <div class="cell" onclick="showCustomContent(8)">8</div>
@@ -111,13 +102,14 @@
 
     <script>
         function showCustomContent(number) {
+            // 隱藏九宮格
             document.getElementById('grid').style.display = 'none';
+
+            // 顯示特定卡片
             for (let i = 1; i <= 9; i++) {
-                if (i !== 5) {
-                    document.getElementById('customContent' + i).style.display = 'none';
-                }
+                document.getElementById('customContent' + i).style.display = 'none';
             }
-            document.getElementById('customContent' + number).style.display = 'flex';
+            document.getElementById('customContent' + number).style.display = 'block';
         }
     </script>
 </body>
