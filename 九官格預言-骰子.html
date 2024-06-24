@@ -5,45 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <title>九宮格手機網頁</title>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: Arial, sans-serif;
-        }
+<title>九宮格手機網頁</title>
+<style>
+    body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Arial, sans-serif;
+    }
 
-        #grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            width: 100%;
-            height: 100%;
-        }
+    #grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        width: 100%;
+        height: 100%;
+    }
 
-        .cell {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid #000;
-            font-size: 2em;
-            cursor: pointer;
-        }
+    .cell {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid transparent; /* 使邊框透明 */
+        font-size: 2em;
+        cursor: pointer;
+        color: transparent; /* 使文字透明 */
+    }
 
-        .customContent {
-            width: 100%;
-            height: 100%;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            font-size: 2em;
-        }
-    </style>
+    .customContent {
+        width: 100%;
+        height: 100%;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        font-size: 2em;
+    }
+</style>
 </head>
 <body>
     <div id="grid">
