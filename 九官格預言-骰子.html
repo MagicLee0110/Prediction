@@ -44,6 +44,28 @@
         align-items: center;
         font-size: 2em;
     }
+
+    .card-cell {
+        background-color: #f0f0f0; /* 卡片背景顏色 */
+        border-radius: 10px; /* 圓角 */
+        padding: 20px; /* 內邊距 */
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 陰影效果 */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2em;
+        position: relative; /* 相對定位，用於添加內容 */
+    }
+
+    .card-cell::after {
+        content: "預言卡片"; /* 在卡片內容後加上文字 */
+        position: absolute; /* 絕對定位 */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /* 將內容置中 */
+        font-size: 0.8em;
+        color: #666;
+    }
 </style>
 </head>
 <body>
@@ -52,7 +74,7 @@
         <div class="cell" onclick="showCustomContent(2)">2</div>
         <div class="cell" onclick="showCustomContent(3)">3</div>
         <div class="cell" onclick="showCustomContent(4)">4</div>
-        <div class="cell" onclick="showCustomContent(5)">5</div>
+        <div class="cell card-cell" onclick="showCustomContent(5)"></div> <!-- 添加 card-cell 類別 -->
         <div class="cell" onclick="showCustomContent(6)">6</div>
         <div class="cell" onclick="showCustomContent(7)">7</div>
         <div class="cell" onclick="showCustomContent(8)">8</div>
@@ -91,9 +113,11 @@
         function showCustomContent(number) {
             document.getElementById('grid').style.display = 'none';
             for (let i = 1; i <= 9; i++) {
-                document.getElementById(`customContent${i}`).style.display = 'none';
+                if (i !== 5) {
+                    document.getElementById('customContent' + i).style.display = 'none';
+                }
             }
-            document.getElementById(`customContent${number}`).style.display = 'flex';
+            document.getElementById('customContent' + number).style.display = 'flex';
         }
     </script>
 </body>
