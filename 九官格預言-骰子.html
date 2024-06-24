@@ -1,132 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<style>
-  body {
-    background-color: black; /* 黑色背景 */
-    color: white; /* 白色文字 */
-    font-size: 5em; /* 字体大小 */
-    text-align: center; /* 文字置中 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* 讓內容在整個視窗內垂直居中 */
-    margin: 0;
-  }
-  
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 10px;
-    max-width: 80%;
-    margin: auto;
-  }
-  
-  .grid div {
-    background-color: black; /* 黑色背景 */
-    color: black; /* 黑色文字，隱藏數字 */
-    font-size: 1em; /* 數字的字體大小 */
-    text-align: center; /* 文字置中 */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer; /* 添加手指游標 */
-  }
-  
-  .grid div.active {
-    background-color: white; /* 白色背景 */
-    color: white; /* 白色文字 */
-  }
+    <title>九宮格手機網頁</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
 
-  .content-display {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3em; /* 調整顯示字體大小 */
-    color: white;
-    white-space: nowrap; /* 禁止文字自動換行 */
-  }
-</style>
-<title>九宮格預言</title>
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            width: 100%;
+            height: 100%;
+        }
+
+        .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #000;
+            font-size: 2em;
+            cursor: pointer;
+        }
+
+        .customContent {
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+        }
+    </style>
 </head>
 <body>
-  <div class="grid">
-    <div onclick="showContent(0)">1</div>
-    <div onclick="showContent(1)">2</div>
-    <div onclick="showContent(2)">3</div>
-    <div onclick="showContent(3)">4</div>
-    <div onclick="showContent(4)">5</div>
-    <div onclick="showContent(5)">6</div>
-    <div onclick="showContent(6)">7</div>
-    <div onclick="showContent(7)">8</div>
-    <div onclick="showContent(8)">9</div>
-  </div>
+    <div id="grid">
+        <div class="cell" onclick="showCustomContent(1)">1</div>
+        <div class="cell" onclick="showCustomContent(2)">2</div>
+        <div class="cell" onclick="showCustomContent(3)">3</div>
+        <div class="cell" onclick="showCustomContent(4)">4</div>
+        <div class="cell" onclick="showCustomContent(5)">5</div>
+        <div class="cell" onclick="showCustomContent(6)">6</div>
+        <div class="cell" onclick="showCustomContent(7)">7</div>
+        <div class="cell" onclick="showCustomContent(8)">8</div>
+        <div class="cell" onclick="showCustomContent(9)">9</div>
+    </div>
+    
+    <div id="customContent1" class="customContent">
+        <p>第一自訂義</p>
+    </div>
+    <div id="customContent2" class="customContent">
+        <p>第二自訂義</p>
+    </div>
+    <div id="customContent3" class="customContent">
+        <p>第三自訂義</p>
+    </div>
+    <div id="customContent4" class="customContent">
+        <p>第四自訂義</p>
+    </div>
+    <div id="customContent5" class="customContent">
+        <p>第五自訂義</p>
+    </div>
+    <div id="customContent6" class="customContent">
+        <p>第六自訂義</p>
+    </div>
+    <div id="customContent7" class="customContent">
+        <p>第七自訂義</p>
+    </div>
+    <div id="customContent8" class="customContent">
+        <p>第八自訂義</p>
+    </div>
+    <div id="customContent9" class="customContent">
+        <p>第九自訂義</p>
+    </div>
 
-  <div class="content-display" id="contentDisplay"></div>
-
-  <script>
-
-        // 阻止 F12 開發者工具
-        document.addEventListener("keydown", function (e) {
-            if (e.keyCode == 123) {
-                e.preventDefault();
-                alert("此網頁禁止使用F12");
+    <script>
+        function showCustomContent(number) {
+            document.getElementById('grid').style.display = 'none';
+            for (let i = 1; i <= 9; i++) {
+                document.getElementById(`customContent${i}`).style.display = 'none';
             }
-        });
-
-        // 禁用右鍵點擊
-        document.addEventListener("contextmenu", function (e) {
-            e.preventDefault();
-            alert("此網頁禁止使用右鍵");
-        });
-
-        // 禁用 Ctrl+u 組合鍵
-        document.addEventListener("keydown", function (e) {
-            if (e.ctrlKey && e.key === "u") {
-                e.preventDefault();
-                alert("此網頁禁止使用Ctrl+U 組合鍵");
-            }
-        });
-
-        // 禁用 Ctrl+U 組合鍵
-        document.addEventListener("keydown", function (e) {
-            if (e.ctrlKey && e.key === "U") {
-                e.preventDefault();
-                alert("此網頁禁止使用Ctrl+U 組合鍵");
-            }
-        });
-    // 定義每個九宮格的內容
-    const contents = [
-      '你會骰到2點', '你會骰到2點', '你會骰到3點',
-      '你會骰到4點', '你會骰到5點', '你會骰到6點',
-      'G', 'H', 'I'
-    ];
-
-    function showContent(index) {
-      // 先將所有格子重置為初始狀態
-      let cells = document.querySelectorAll('.grid div');
-      cells.forEach(cell => {
-        cell.classList.remove('active');
-        cell.style.color = 'black';
-        cell.style.backgroundColor = 'black';
-      });
-      
-      // 設置選中的格子為active狀態
-      let selectedCell = document.querySelector('.grid div:nth-child(' + (index + 1) + ')');
-      selectedCell.classList.add('active');
-      selectedCell.style.color = 'white';
-      selectedCell.style.backgroundColor = 'white';
-      
-      // 更新顯示的內容
-      let contentDisplay = document.getElementById('contentDisplay');
-      contentDisplay.textContent = contents[index];
-    }
-  </script>
+            document.getElementById(`customContent${number}`).style.display = 'flex';
+        }
+    </script>
 </body>
 </html>
