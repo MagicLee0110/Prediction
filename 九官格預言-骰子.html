@@ -85,6 +85,7 @@
         line-height: 1.5; /* 行高 */
         opacity: 0; /* 初始透明度 */
         transition: opacity 1s ease; /* 過渡效果 */
+        text-align: center; /* 文字置中 */
     }
 
     .visible-cell {
@@ -94,15 +95,8 @@
     }
 
     .icon {
-        margin-left: 5px; /* 調整圖標與文字的間距 */
-        font-size: 0.8em; /* 圖標大小 */
-        transition: opacity 0.3s ease; /* 過渡效果 */
-        opacity: 1; /* 初始透明度 */
-        pointer-events: none; /* 禁止點擊事件 */
-        position: absolute; /* 絕對定位 */
-        top: 50%; /* 垂直居中 */
-        right: 10px; /* 與父元素右邊距離 */
-        transform: translate(0, -50%); /* 垂直居中 */
+        font-size: 2em; /* 圖標大小 */
+        cursor: pointer; /* 鼠標變成指針 */
     }
 
     .visible-cell:active .icon {
@@ -140,7 +134,9 @@
         <div class="cell" onclick="showCustomContent(2)">2</div>
         <div class="cell" onclick="showCustomContent(3)">3</div>
         <div class="cell" onclick="showCustomContent(4)">4</div>
-        <div class="cell visible-cell" onclick="showCustomContent(5)">播放           <span class="icon">&#9658;</span>
+        <div class="cell visible-cell" onclick="showCustomContent(5)">
+            <span class="text-before">播放</span>
+            <span class="icon" onclick="replayContent(event, 5)">&#9658;</span>
         </div>
         <div class="cell" onclick="showCustomContent(6)">6</div>
         <div class="cell" onclick="showCustomContent(7)">7</div>
@@ -152,46 +148,55 @@
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到一點</p>
+        <span class="icon" onclick="replayContent(event, 1)">&#9658;</span>
     </div>
     <div id="customContent2" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到二點</p>
+        <span class="icon" onclick="replayContent(event, 2)">&#9658;</span>
     </div>
     <div id="customContent3" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到三點</p>
+        <span class="icon" onclick="replayContent(event, 3)">&#9658;</span>
     </div>
     <div id="customContent4" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到四點</p>
+        <span class="icon" onclick="replayContent(event, 4)">&#9658;</span>
     </div>
     <div id="customContent5" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到五點</p>
+        <span class="icon" onclick="replayContent(event, 5)">&#9658;</span>
     </div>
     <div id="customContent6" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到六點</p>
+        <span class="icon" onclick="replayContent(event, 6)">&#9658;</span>
     </div>
     <div id="customContent7" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到七點</p>
+        <span class="icon" onclick="replayContent(event, 7)">&#9658;</span>
     </div>
     <div id="customContent8" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到八點</p>
+        <span class="icon" onclick="replayContent(event, 8)">&#9658;</span>
     </div>
     <div id="customContent9" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到九點</p>
+        <span class="icon" onclick="replayContent(event, 9)">&#9658;</span>
     </div>
 
     <script>
@@ -206,8 +211,16 @@
             const customContent = document.getElementById('customContent' + number);
             customContent.style.display = 'block';
 
+            // 播放文字動畫
+            playTextAnimation(customContent);
+        }
+
+        function playTextAnimation(customContent) {
             // 選擇所有段落
             const paragraphs = customContent.querySelectorAll('p');
+
+            // 重置段落的透明度
+            paragraphs.forEach(p => p.style.opacity = 0);
 
             // 設置計時器，逐行顯示和隱藏文字
             paragraphs.forEach((p, index) => {
@@ -218,10 +231,12 @@
                     }, 2000); // 2秒後隱藏文字
                 }, index * 4000); // 每行間隔4秒
             });
+        }
 
-            // 標記為已點擊，用於控制文字和圖標的顯示
-            const visibleCell = document.querySelector('.visible-cell');
-            visibleCell.classList.add('clicked');
+        function replayContent(event, number) {
+            event.stopPropagation(); // 防止事件冒泡
+            const customContent = document.getElementById('customContent' + number);
+            playTextAnimation(customContent);
         }
     </script>
 </body>
