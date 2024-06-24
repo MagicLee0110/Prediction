@@ -15,7 +15,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-family: Arial, sans-serif;
+        font-family: 'Courier New', Courier, monospace; /* 手寫風格字體 */
+        background-color: #f3f3f3; /* 背景色 */
     }
 
     #grid {
@@ -23,7 +24,8 @@
         grid-template-columns: repeat(3, 1fr);
         grid-template-rows: repeat(3, 1fr);
         width: 100%;
-        height: 100%;
+        max-width: 600px; /* 控制九宮格的最大寬度 */
+        margin: 20px; /* 邊距 */
     }
 
     .cell {
@@ -34,16 +36,38 @@
         font-size: 2em;
         cursor: pointer;
         color: transparent; /* 使文字透明 */
+        transition: background-color 0.3s ease, transform 0.1s ease; /* 過渡效果 */
+        position: relative; /* 相對定位 */
+    }
+
+    .cell:hover {
+        background-color: #f0f0f0; /* 滑鼠懸停時的背景色 */
+    }
+
+    .cell::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.1); /* 點擊後的淡色遮罩 */
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .cell:active::after {
+        opacity: 1; /* 點擊時顯示遮罩 */
     }
 
     .customContent {
-        width: 80%; /* 調整寬度 */
-        max-width: 400px; /* 最大寬度限制 */
+        width: 90%; /* 讓卡片更寬 */
+        max-width: 300px; /* 調整最大寬度 */
         height: auto; /* 高度自適應 */
-        padding: 20px; /* 內邊距 */
-        background-color: #fff; /* 背景顏色 */
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 陰影效果 */
-        border-radius: 8px; /* 圓角 */
+        padding: 15px; /* 調整內邊距 */
+        background-color: #f8f3ec; /* 淡色背景 */
+        border: 1px solid #ccc; /* 手寫風格邊框 */
+        border-radius: 12px; /* 更大的圓角 */
         text-align: center; /* 文字居中 */
         display: none; /* 初始隱藏 */
         position: absolute; /* 絕對定位 */
@@ -51,11 +75,62 @@
         left: 50%; /* 與父元素水平居中 */
         transform: translate(-50%, -50%); /* 居中定位 */
         z-index: 1000; /* 提高層級 */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 更自然的陰影效果 */
+    }
+
+    .customContent p {
+        font-size: 1.1em; /* 略微縮小字體 */
+        color: #333; /* 文字顏色 */
+        margin: 0; /* 清除段落預設邊距 */
+        line-height: 1.5; /* 行高 */
+        opacity: 0; /* 初始透明度 */
+        transition: opacity 1s ease; /* 過渡效果 */
     }
 
     .visible-cell {
         display: flex !important;
         color: initial !important;
+        position: relative; /* 相對定位 */
+    }
+
+    .icon {
+        margin-left: 5px; /* 調整圖標與文字的間距 */
+        font-size: 0.8em; /* 圖標大小 */
+        transition: opacity 0.3s ease; /* 過渡效果 */
+        opacity: 1; /* 初始透明度 */
+        pointer-events: none; /* 禁止點擊事件 */
+        position: absolute; /* 絕對定位 */
+        top: 50%; /* 垂直居中 */
+        right: 10px; /* 與父元素右邊距離 */
+        transform: translate(0, -50%); /* 垂直居中 */
+    }
+
+    .visible-cell:active .icon {
+        opacity: 0; /* 點擊時隱藏圖標 */
+    }
+
+    .visible-cell.clicked .icon {
+        opacity: 0; /* 顯示卡片後隱藏圖標 */
+    }
+
+    .visible-cell.clicked .text-before {
+        opacity: 0; /* 顯示卡片後隱藏原始文字 */
+    }
+
+    .visible-cell .text-before {
+        transition: opacity 0.3s ease; /* 過渡效果 */
+        position: relative; /* 相對定位 */
+        opacity: 1; /* 初始透明度 */
+    }
+
+    .visible-cell.clicked .text-after {
+        opacity: 1; /* 顯示卡片後顯示新文字 */
+    }
+
+    .visible-cell .text-after {
+        transition: opacity 0.3s ease; /* 過渡效果 */
+        position: relative; /* 相對定位 */
+        opacity: 0; /* 初始透明度 */
     }
 </style>
 </head>
@@ -65,7 +140,10 @@
         <div class="cell" onclick="showCustomContent(2)">2</div>
         <div class="cell" onclick="showCustomContent(3)">3</div>
         <div class="cell" onclick="showCustomContent(4)">4</div>
-        <div class="cell visible-cell" onclick="showCustomContent(5)">點擊開啟</div> <!-- 添加 visible-cell 類別 -->
+        <div class="cell visible-cell" onclick="showCustomContent(5)">
+            <span class="text-before"></span>
+            <span class="icon">&#9658;</span>
+        </div>
         <div class="cell" onclick="showCustomContent(6)">6</div>
         <div class="cell" onclick="showCustomContent(7)">7</div>
         <div class="cell" onclick="showCustomContent(8)">8</div>
@@ -73,30 +151,48 @@
     </div>
     
     <div id="customContent1" class="customContent">
+        <p>我有一個預感</p>
+        <p>如果讓你骰骰子</p>
         <p>你會骰到一點</p>
     </div>
     <div id="customContent2" class="customContent">
+        <p>我有一個預感</p>
+        <p>如果讓你骰骰子</p>
         <p>你會骰到二點</p>
     </div>
     <div id="customContent3" class="customContent">
+        <p>我有一個預感</p>
+        <p>如果讓你骰骰子</p>
         <p>你會骰到三點</p>
     </div>
     <div id="customContent4" class="customContent">
+        <p>我有一個預感</p>
+        <p>如果讓你骰骰子</p>
         <p>你會骰到四點</p>
     </div>
     <div id="customContent5" class="customContent">
+        <p>我有一個預感</p>
+        <p>如果讓你骰骰子</p>
         <p>你會骰到五點</p>
     </div>
     <div id="customContent6" class="customContent">
+        <p>我有一個預感</p>
+        <p>如果讓你骰骰子</p>
         <p>你會骰到六點</p>
     </div>
     <div id="customContent7" class="customContent">
+        <p>我有一個預感</p>
+        <p>如果讓你骰骰子</p>
         <p>你會骰到七點</p>
     </div>
     <div id="customContent8" class="customContent">
+        <p>我有一個預感</p>
+        <p>如果讓你骰骰子</p>
         <p>你會骰到八點</p>
     </div>
     <div id="customContent9" class="customContent">
+        <p>我有一個預感</p>
+        <p>如果讓你骰骰子</p>
         <p>你會骰到九點</p>
     </div>
 
@@ -109,7 +205,25 @@
             for (let i = 1; i <= 9; i++) {
                 document.getElementById('customContent' + i).style.display = 'none';
             }
-            document.getElementById('customContent' + number).style.display = 'block';
+            const customContent = document.getElementById('customContent' + number);
+            customContent.style.display = 'block';
+
+            // 選擇所有段落
+            const paragraphs = customContent.querySelectorAll('p');
+
+            // 設置計時器，逐行顯示和隱藏文字
+            paragraphs.forEach((p, index) => {
+                setTimeout(() => {
+                    p.style.opacity = 1;
+                    setTimeout(() => {
+                        p.style.opacity = 0;
+                    }, 2000); // 2秒後隱藏文字
+                }, index * 4000); // 每行間隔4秒
+            });
+
+            // 標記為已點擊，用於控制文字和圖標的顯示
+            const visibleCell = document.querySelector('.visible-cell');
+            visibleCell.classList.add('clicked');
         }
     </script>
 </body>
