@@ -16,7 +16,7 @@
         justify-content: center;
         align-items: center;
         font-family: 'Courier New', Courier, monospace; /* 手寫風格字體 */
-        background-color: #f3f3f3; /* 背景色 */
+        background-color: #000; /* 将整个页面背景色改为黑色 */
     }
 
     #grid {
@@ -26,7 +26,8 @@
         width: 100%;
         max-width: 600px; /* 控制九宮格的最大寬度 */
         margin: 20px; /* 邊距 */
-	border: 3px solid #000; /* 添加黑色大框 */
+        border: 3px solid #000; /* 添加黑色大框 */
+        background-color: #fff; /* 九宫格内部背景色为白色 */
     }
 
     .cell {
@@ -39,11 +40,11 @@
         color: transparent; /* 使文字透明 */
         transition: background-color 0.3s ease, transform 0.1s ease; /* 過渡效果 */
         position: relative; /* 相對定位 */
-        user-select: none; /* 禁止文本选择 */
+        user-select: none; /* 禁止文本選擇 */
     }
 
     .cell:hover {
-        background-color: #f0f0f0; /* 滑鼠懸停時的背景色 */
+        background-color: #333; /* 滑鼠懸停時的背景色 */
     }
 
     .cell::after {
@@ -63,12 +64,12 @@
     }
 
     .customContent {
-        width: 90%; /* 讓卡片更寬 */
-        max-width: 300px; /* 調整最大寬度 */
+        width: calc(100% - 40px); /* 九宮格內邊距為20px，所以內容寬度應減去兩倍邊距 */
+        max-width: 600px; /* 控制最大寬度 */
         height: auto; /* 高度自適應 */
         padding: 15px; /* 調整內邊距 */
         background-color: #f8f3ec; /* 淡色背景 */
-        border: 1px solid #ccc; /* 手寫風格邊框 */
+        border: 3px solid #000; /* 黑色邊框，與九宮格大小一致 */
         border-radius: 12px; /* 更大的圓角 */
         text-align: center; /* 文字居中 */
         display: none; /* 初始隱藏 */
