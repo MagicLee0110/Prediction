@@ -78,7 +78,7 @@
         transform: translate(-50%, -50%); /* 居中定位 */
         z-index: 1000; /* 提高層級 */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 更自然的陰影效果 */
-	font-size: 1.7em; /* 根據需要調整文字大小 */
+        font-size: 1.7em; /* 根據需要調整文字大小 */
     }
 
     .customContent p {
@@ -129,6 +129,15 @@
         position: relative; /* 相對定位 */
         opacity: 0; /* 初始透明度 */
     }
+
+    .progress {
+        height: 4px;
+        background-color: #4CAF50; /* 进度条颜色 */
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transition: width 0.3s linear; /* 进度条宽度变化的过渡效果 */
+    }
 </style>
 </head>
 <body>
@@ -152,54 +161,63 @@
         <p>如果讓你骰骰子</p>
         <p>你會骰到一點</p>
         <span class="icon" onclick="replayContent(event, 1)">&#9658;</span>
+        <div class="progress"></div> <!-- 进度条 -->
     </div>
     <div id="customContent2" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到二點</p>
         <span class="icon" onclick="replayContent(event, 2)">&#9658;</span>
+        <div class="progress"></div> <!-- 进度条 -->
     </div>
     <div id="customContent3" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到三點</p>
         <span class="icon" onclick="replayContent(event, 3)">&#9658;</span>
+        <div class="progress"></div> <!-- 进度条 -->
     </div>
     <div id="customContent4" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到四點</p>
         <span class="icon" onclick="replayContent(event, 4)">&#9658;</span>
+        <div class="progress"></div> <!-- 进度条 -->
     </div>
     <div id="customContent5" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到五點</p>
         <span class="icon" onclick="replayContent(event, 5)">&#9658;</span>
+        <div class="progress"></div> <!-- 进度条 -->
     </div>
     <div id="customContent6" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到六點</p>
         <span class="icon" onclick="replayContent(event, 6)">&#9658;</span>
+        <div class="progress"></div> <!-- 进度条 -->
     </div>
     <div id="customContent7" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到七點</p>
         <span class="icon" onclick="replayContent(event, 7)">&#9658;</span>
+        <div class="progress"></div> <!-- 进度条 -->
     </div>
     <div id="customContent8" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到八點</p>
         <span class="icon" onclick="replayContent(event, 8)">&#9658;</span>
+        <div class="progress"></div> <!-- 进度条 -->
     </div>
     <div id="customContent9" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到九點</p>
         <span class="icon" onclick="replayContent(event, 9)">&#9658;</span>
+        <div class="progress"></div> <!-- 进度条 -->
     </div>
 
     <script>
@@ -219,21 +237,49 @@
         }
 
         function playTextAnimation(customContent) {
-            // 選擇所有段落
             const paragraphs = customContent.querySelectorAll('p');
+            const progressBar = customContent.querySelector('.progress');
 
-            // 重置段落的透明度
+            // 重置段落的透明度和进度条
             paragraphs.forEach(p => p.style.opacity = 0);
+            progressBar.style.width = '0%';
 
-            // 設置計時器，逐行顯示和隱藏文字
-            paragraphs.forEach((p, index) => {
-                setTimeout(() => {
-                    p.style.opacity = 1;
-                    setTimeout(() => {
+            // 计算每个段落的显示时间
+            const animationDuration = 2000; // 每行文字显示时间
+            const totalDuration = paragraphs.length * animationDuration; // 总动画时间
+
+            let startTime = null;
+            let progress = 0;
+
+            function animate(timestamp) {
+                if (!startTime) {
+                    startTime = timestamp;
+                }
+                
+                const elapsed = timestamp - startTime;
+                progress = Math.min(1, elapsed / totalDuration);
+
+                // 更新进度条宽度
+                progressBar.style.width = progress * 100 + '%';
+
+                // 计算当前应该显示的段落
+                const currentParagraphIndex = Math.floor(progress * paragraphs.length);
+                paragraphs.forEach((p, index) => {
+                    if (index === currentParagraphIndex) {
+                        p.style.opacity = 1;
+                    } else {
                         p.style.opacity = 0;
-                    }, 2000); // 2秒後隱藏文字
-                }, index * 4000); // 每行間隔4秒
-            });
+                    }
+                });
+
+                // 继续动画直到所有段落都显示完毕
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            }
+
+            // 开始动画
+            requestAnimationFrame(animate);
         }
 
         function replayContent(event, number) {
