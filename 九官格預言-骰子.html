@@ -16,7 +16,7 @@
         justify-content: center;
         align-items: center;
         font-family: 'Courier New', Courier, monospace; /* 手寫風格字體 */
-        background-color: #000; /* 将整个页面背景色改为黑色 */
+        background-color: #000; /* 將整個頁面背景色改為黑色 */
     }
 
     #grid {
@@ -27,7 +27,7 @@
         max-width: 600px; /* 控制九宮格的最大寬度 */
         margin: 20px; /* 邊距 */
         border: 3px solid #000; /* 添加黑色大框 */
-        background-color: #fff; /* 九宫格内部背景色为白色 */
+        background-color: #fff; /* 九宫格内部背景色為白色 */
     }
 
     .cell {
@@ -132,11 +132,11 @@
 
     .progress {
         height: 4px;
-        background-color: #4CAF50; /* 进度条颜色 */
+        background-color: #4CAF50; /* 進度條顏色 */
         position: absolute;
         bottom: 0;
         left: 0;
-        transition: width 0.3s linear; /* 进度条宽度变化的过渡效果 */
+        transition: width 0.3s linear; /* 進度條寬度變化的過渡效果 */
     }
 </style>
 </head>
@@ -146,9 +146,9 @@
         <div class="cell" onclick="showCustomContent(2)">2</div>
         <div class="cell" onclick="showCustomContent(3)">3</div>
         <div class="cell" onclick="showCustomContent(4)">4</div>
-        <div class="cell visible-cell" onclick="showCustomContent(5)">
+        <div class="cell visible-cell" onclick="togglePlayPause(5)">
             <span class="text-before">播放</span>
-            <span class="icon" onclick="replayContent(event, 5)">&#9658;</span>
+            <span class="icon">&#9658;</span>
         </div>
         <div class="cell" onclick="showCustomContent(6)">6</div>
         <div class="cell" onclick="showCustomContent(7)">7</div>
@@ -160,132 +160,201 @@
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到一點</p>
-        <span class="icon" onclick="replayContent(event, 1)">&#9658;</span>
-        <div class="progress"></div> <!-- 进度条 -->
+        <span class="icon">&#9658;</span>
+        <div class="progress"></div> <!-- 進度條 -->
     </div>
     <div id="customContent2" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到二點</p>
-        <span class="icon" onclick="replayContent(event, 2)">&#9658;</span>
-        <div class="progress"></div> <!-- 进度条 -->
+        <span class="icon">&#9658;</span>
+        <div class="progress"></div> <!-- 進度條 -->
     </div>
     <div id="customContent3" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到三點</p>
-        <span class="icon" onclick="replayContent(event, 3)">&#9658;</span>
-        <div class="progress"></div> <!-- 进度条 -->
+        <span class="icon">&#9658;</span>
+        <div class="progress"></div> <!-- 進度條 -->
     </div>
     <div id="customContent4" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到四點</p>
-        <span class="icon" onclick="replayContent(event, 4)">&#9658;</span>
-        <div class="progress"></div> <!-- 进度条 -->
+        <span class="icon">&#9658;</span>
+        <div class="progress"></div> <!-- 進度條 -->
     </div>
     <div id="customContent5" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到五點</p>
-        <span class="icon" onclick="replayContent(event, 5)">&#9658;</span>
-        <div class="progress"></div> <!-- 进度条 -->
+        <span class="icon" onclick="togglePlayPause(5)">&#9658;</span>
+        <div class="progress"></div> <!-- 進度條 -->
     </div>
     <div id="customContent6" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到六點</p>
-        <span class="icon" onclick="replayContent(event, 6)">&#9658;</span>
-        <div class="progress"></div> <!-- 进度条 -->
+        <span class="icon">&#9658;</span>
+        <div class="progress"></div> <!-- 進度條 -->
     </div>
     <div id="customContent7" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到七點</p>
-        <span class="icon" onclick="replayContent(event, 7)">&#9658;</span>
-        <div class="progress"></div> <!-- 进度条 -->
+        <span class="icon">&#9658;</span>
+        <div class="progress"></div> <!-- 進度條 -->
     </div>
     <div id="customContent8" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到八點</p>
-        <span class="icon" onclick="replayContent(event, 8)">&#9658;</span>
-        <div class="progress"></div> <!-- 进度条 -->
+        <span class="icon">&#9658;</span>
+        <div class="progress"></div> <!-- 進度條 -->
     </div>
     <div id="customContent9" class="customContent">
         <p>我有一個預感</p>
         <p>如果讓你骰骰子</p>
         <p>你會骰到九點</p>
-        <span class="icon" onclick="replayContent(event, 9)">&#9658;</span>
-        <div class="progress"></div> <!-- 进度条 -->
+        <span class="icon">&#9658;</span>
+        <div class="progress"></div> <!-- 進度條 -->
     </div>
 
     <script>
+        let playingContent = null; // 記錄當前正在播放的卡片
+        let animationFrame = null; // 記錄動畫的requestAnimationFrame ID
+        let isPlaying = false; // 當前是否正在播放
+        let animationProgress = 0; // 記錄當前的動畫進度
+
         function showCustomContent(number) {
             // 隱藏九宮格
             document.getElementById('grid').style.display = 'none';
 
+            // 隱藏所有自定義內容
+            const customContents = document.querySelectorAll('.customContent');
+            customContents.forEach(content => {
+                content.style.display = 'none';
+            });
+
             // 顯示特定卡片
-            for (let i = 1; i <= 9; i++) {
-                document.getElementById('customContent' + i).style.display = 'none';
-            }
             const customContent = document.getElementById('customContent' + number);
             customContent.style.display = 'block';
 
             // 播放文字動畫
             playTextAnimation(customContent);
+
+            // 設置當前播放卡片
+            playingContent = customContent;
         }
 
         function playTextAnimation(customContent) {
             const paragraphs = customContent.querySelectorAll('p');
             const progressBar = customContent.querySelector('.progress');
 
-            // 重置段落的透明度和进度条
+            // 重置段落的透明度和進度條
             paragraphs.forEach(p => p.style.opacity = 0);
             progressBar.style.width = '0%';
 
-            // 计算每个段落的显示时间
-            const animationDuration = 2000; // 每行文字显示时间
-            const totalDuration = paragraphs.length * animationDuration; // 总动画时间
+            // 計算每個段落的顯示時間
+            const animationDuration = 2000; // 每行文字顯示時間
+            const totalDuration = paragraphs.length * animationDuration; // 總動畫時間
 
             let startTime = null;
-            let progress = 0;
 
             function animate(timestamp) {
                 if (!startTime) {
-                    startTime = timestamp;
+                    startTime = timestamp - (animationProgress * totalDuration); // 計算從暫停點繼續播放
                 }
-                
-                const elapsed = timestamp - startTime;
-                progress = Math.min(1, elapsed / totalDuration);
 
-                // 更新进度条宽度
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(1, elapsed / totalDuration);
+
+                // 更新進度條寬度
                 progressBar.style.width = progress * 100 + '%';
 
-                // 计算当前应该显示的段落
+                // 計算當前應該顯示的段落
                 const currentParagraphIndex = Math.floor(progress * paragraphs.length);
                 paragraphs.forEach((p, index) => {
-                    if (index === currentParagraphIndex) {
+                    if (index <= currentParagraphIndex) {
                         p.style.opacity = 1;
                     } else {
                         p.style.opacity = 0;
                     }
                 });
 
-                // 继续动画直到所有段落都显示完毕
+                // 繼續動畫直到所有段落都顯示完畢
                 if (progress < 1) {
-                    requestAnimationFrame(animate);
+                    animationProgress = progress; // 更新當前進度
+                    animationFrame = requestAnimationFrame(animate);
+                } else {
+                    // 動畫結束後重置按鈕為播放狀態
+                    resetPlayButton(customContent);
                 }
             }
 
-            // 开始动画
-            requestAnimationFrame(animate);
+            // 開始動畫
+            isPlaying = true;
+            animationFrame = requestAnimationFrame(animate);
         }
 
-        function replayContent(event, number) {
-            event.stopPropagation(); // 防止事件冒泡
+        function togglePlayPause(number) {
             const customContent = document.getElementById('customContent' + number);
-            playTextAnimation(customContent);
+            const icon = customContent.querySelector('.icon');
+
+            if (!playingContent || playingContent !== customContent) {
+                // 如果沒有正在播放的內容或者點擊了不同的內容，重新開始播放
+                if (playingContent) {
+                    resetPlayingContent();
+                }
+                showCustomContent(number);
+                icon.textContent = '❚❚'; // 暫停圖標
+            } else {
+                // 否則切換播放/暫停
+                if (isPlaying) {
+                    pauseTextAnimation();
+                    icon.textContent = '►'; // 播放圖標
+                } else {
+                    resumeTextAnimation();
+                    icon.textContent = '❚❚'; // 暫停圖標
+                }
+            }
+        }
+
+        function pauseTextAnimation() {
+            cancelAnimationFrame(animationFrame); // 取消動畫
+            isPlaying = false; // 更新播放狀態
+        }
+
+        function resumeTextAnimation() {
+            playTextAnimation(playingContent); // 恢復動畫
+            isPlaying = true; // 更新播放狀態
+        }
+
+        function resetPlayingContent() {
+            // 重置當前播放內容
+            if (playingContent) {
+                const paragraphs = playingContent.querySelectorAll('p');
+                const progressBar = playingContent.querySelector('.progress');
+
+                // 重置段落的透明度和進度條
+                paragraphs.forEach(p => p.style.opacity = 0);
+                progressBar.style.width = '0%';
+
+                // 取消動畫
+                cancelAnimationFrame(animationFrame);
+
+                // 重置播放狀態和圖標
+                isPlaying = false;
+                animationProgress = 0; // 重置進度
+                const icon = playingContent.querySelector('.icon');
+                icon.textContent = '►';
+            }
+        }
+
+        function resetPlayButton(customContent) {
+            const icon = customContent.querySelector('.icon');
+            icon.textContent = '►'; // 播放圖標
+            animationProgress = 0; // 重置動畫進度
         }
     </script>
 </body>
