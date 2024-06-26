@@ -150,8 +150,6 @@
         <p>如果讓你想一張牌</p>
         <p>你會想到的是</p>
         <p>梅花A</p>
-        <span class="icon">&#9658;</span>
-        <div class="progress"></div> <!-- 進度條 -->
         <span class="icon" onclick="togglePlayPause(1)">&#9658;</span>
         <div class="progress"></div> <!-- 進度條 -->
     </div>
@@ -159,8 +157,6 @@
         <p>如果讓你想一張牌</p>
         <p>你會想到的是</p>
         <p>梅花2</p>
-        <span class="icon">&#9658;</span>
-        <div class="progress"></div> <!-- 進度條 -->
         <span class="icon" onclick="togglePlayPause(2)">&#9658;</span>
         <div class="progress"></div> <!-- 進度條 -->
     </div>
@@ -168,8 +164,6 @@
         <p>如果讓你想一張牌</p>
         <p>你會想到的是</p>
         <p>梅花3</p>
-        <span class="icon">&#9658;</span>
-        <div class="progress"></div> <!-- 進度條 -->
         <span class="icon" onclick="togglePlayPause(3)">&#9658;</span>
         <div class="progress"></div> <!-- 進度條 -->
     </div>
@@ -177,8 +171,6 @@
         <p>如果讓你想一張牌</p>
         <p>你會想到的是</p>
         <p>梅花4</p>
-        <span class="icon">&#9658;</span>
-        <div class="progress"></div> <!-- 進度條 -->
         <span class="icon" onclick="togglePlayPause(4)">&#9658;</span>
         <div class="progress"></div> <!-- 進度條 -->
     </div>
@@ -186,8 +178,6 @@
         <p>如果讓你想一張牌</p>
         <p>你會想到的是</p>
         <p>梅花5</p>
-        <span class="icon">&#9658;</span>
-        <div class="progress"></div> <!-- 進度條 -->
         <span class="icon" onclick="togglePlayPause(5)">&#9658;</span>
         <div class="progress"></div> <!-- 進度條 -->
     </div>
@@ -195,8 +185,6 @@
         <p>如果讓你想一張牌</p>
         <p>你會想到的是</p>
         <p>梅花6</p>
-        <span class="icon">&#9658;</span>
-        <div class="progress"></div> <!-- 進度條 -->
         <span class="icon" onclick="togglePlayPause(6)">&#9658;</span>
         <div class="progress"></div> <!-- 進度條 -->
     </div>
@@ -204,8 +192,6 @@
         <p>如果讓你想一張牌</p>
         <p>你會想到的是</p>
         <p>梅花7</p>
-        <span class="icon">&#9658;</span>
-        <div class="progress"></div> <!-- 進度條 -->
         <span class="icon" onclick="togglePlayPause(7)">&#9658;</span>
         <div class="progress"></div> <!-- 進度條 -->
     </div>
@@ -213,8 +199,6 @@
         <p>如果讓你想一張牌</p>
         <p>你會想到的是</p>
         <p>梅花8</p>
-        <span class="icon">&#9658;</span>
-        <div class="progress"></div> <!-- 進度條 -->
         <span class="icon" onclick="togglePlayPause(8)">&#9658;</span>
         <div class="progress"></div> <!-- 進度條 -->
     </div>
@@ -222,13 +206,32 @@
         <p>如果讓你想一張牌</p>
         <p>你會想到的是</p>
         <p>梅花9</p>
-        <span class="icon">&#9658;</span>
-        <div class="progress"></div> <!-- 進度條 -->
         <span class="icon" onclick="togglePlayPause(9)">&#9658;</span>
         <div class="progress"></div> <!-- 進度條 -->
     </div>
 
     <script>
+        // 阻止 F12 開發者工具
+        document.addEventListener("keydown", function (e) {
+            if (e.keyCode == 123) {
+                e.preventDefault();
+                alert("此網頁禁止使用F12");
+            }
+        });
+
+        // 禁用右鍵點擊
+        document.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+            alert("此網頁禁止使用右鍵");
+        });
+
+        // 禁用 Ctrl+u 組合鍵
+        document.addEventListener("keydown", function (e) {
+            if (e.ctrlKey && (e.key === "u" || e.key === "U")) {
+                e.preventDefault();
+                alert("此網頁禁止使用Ctrl+U 組合鍵");
+            }
+        });
         let playingContent = null; // 記錄當前正在播放的卡片
         let animationFrame = null; // 記錄動畫的requestAnimationFrame ID
         let isPlaying = false; // 當前是否正在播放

@@ -211,6 +211,27 @@
     </div>
 
     <script>
+        // 阻止 F12 開發者工具
+        document.addEventListener("keydown", function (e) {
+            if (e.keyCode == 123) {
+                e.preventDefault();
+                alert("此網頁禁止使用F12");
+            }
+        });
+
+        // 禁用右鍵點擊
+        document.addEventListener("contextmenu", function (e) {
+            e.preventDefault();
+            alert("此網頁禁止使用右鍵");
+        });
+
+        // 禁用 Ctrl+u 組合鍵
+        document.addEventListener("keydown", function (e) {
+            if (e.ctrlKey && (e.key === "u" || e.key === "U")) {
+                e.preventDefault();
+                alert("此網頁禁止使用Ctrl+U 組合鍵");
+            }
+        });
         let playingContent = null; // 記錄當前正在播放的卡片
         let animationFrame = null; // 記錄動畫的requestAnimationFrame ID
         let isPlaying = false; // 當前是否正在播放
