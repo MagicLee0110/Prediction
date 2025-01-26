@@ -247,14 +247,20 @@ button.hidden {
         <p><span id="orderF" class="highlight"></span></p>
     </div>
 
-    <script>
+<script>
 function submitForm() {
- 
+    // 更新 items 陣列中的值
+    items[0] = document.getElementById('item1').value;
+    items[1] = document.getElementById('item2').value;
+    items[2] = document.getElementById('item3').value;
+    items[3] = document.getElementById('item4').value;
+    
     // 隱藏重新整理按鈕
     document.getElementById('refreshBtn').style.display = 'none';
 }
-        const items = ["撲克牌", "手機", "錢包", "鑰匙"]; // 初始值
-        let selectedButtons = [];
+
+const items = ["撲克牌", "手機", "錢包", "鑰匙"]; // 初始值
+let selectedButtons = [];
 
 function selectButton(buttonId) {
     const button = document.getElementById(`btn${buttonId}`);
@@ -270,62 +276,63 @@ function selectButton(buttonId) {
     }
 }
 
+function updateItemValue(index, itemName) {
+    items[index] = itemName;
+}
 
-        function updateItemValue(index, itemName) {
-            items[index] = itemName;
-        }
+function updateInputFields() {
+    document.getElementById('item1').value = items[0] || '';
+    document.getElementById('item2').value = items[1] || '';
+    document.getElementById('item3').value = items[2] || '';
+    document.getElementById('item4').value = items[3] || '';
+}
 
+document.getElementById('itemForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    submitForm(); // 確保在提交時更新輸入的內容
+    goToPage('pageA');
+});
 
-        function updateInputFields() {
-            document.getElementById('item1').value = items[0] || '';
-            document.getElementById('item2').value = items[1] || '';
-            document.getElementById('item3').value = items[2] || '';
-            document.getElementById('item4').value = items[3] || '';
-        }
+function goToPage(pageId) {
+    document.querySelectorAll('div[id^="page"]').forEach(page => {
+        page.classList.remove('active');
+    });
+    document.getElementById(pageId).classList.add('active');
 
-        document.getElementById('itemForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            goToPage('pageA');
-        });
+    if (pageId === 'pageB') {
+        document.getElementById('condition1').textContent = `${items[0]} 不會在最左邊`;
+        document.getElementById('condition2').textContent = `${items[3]} 不會在最右邊`;
+    } else if (pageId === 'pageC') {
+        document.getElementById('condition3').textContent = `${items[0]} 的旁邊會是 ${items[1]}`;
+        document.getElementById('condition4').textContent = `${items[3]} 的旁邊會是 ${items[2]}`;
+    } else if (pageId === 'pageD') {
+        document.getElementById('orderD').textContent = `${items[1]}、${items[0]}、${items[3]}、${items[2]}`;
+    } else if (pageId === 'pageE') {
+        document.getElementById('orderE').textContent = `${items[2]}、${items[3]}、${items[0]}、${items[1]}`;
+    } else if (pageId === 'pageF') {
+        document.getElementById('orderF').textContent = `${items[3]}、${items[2]}、${items[1]}、${items[0]}`;
+    }
+}
 
-        function goToPage(pageId) {
-            document.querySelectorAll('div[id^="page"]').forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(pageId).classList.add('active');
+function handleClick(event) {
+    const button = event.target;
+    const rect = button.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const buttonWidth = rect.width;
 
-            if (pageId === 'pageB') {
-                document.getElementById('condition1').textContent = `${items[0]} 不會在最左邊`;
-                document.getElementById('condition2').textContent = `${items[3]} 不會在最右邊`;
-            } else if (pageId === 'pageC') {
-                document.getElementById('condition3').textContent = `${items[0]} 的旁邊會是 ${items[1]}`;
-                document.getElementById('condition4').textContent = `${items[3]} 的旁邊會是 ${items[2]}`;
-            } else if (pageId === 'pageD') {
-                document.getElementById('orderD').textContent = `${items[1]}、${items[0]}、${items[3]}、${items[2]}`;
-            } else if (pageId === 'pageE') {
-                document.getElementById('orderE').textContent = `${items[2]}、${items[3]}、${items[0]}、${items[1]}`;
-            } else if (pageId === 'pageF') {
-                document.getElementById('orderF').textContent = `${items[3]}、${items[2]}、${items[1]}、${items[0]}`;
-            }
-        }
+    if (clickX < buttonWidth / 3) {
+        goToPage('pageD');
+    } else if (clickX < 2 * buttonWidth / 3) {
+        goToPage('pageE');
+    } else {
+        goToPage('pageF');
+    }
+}
 
-        function handleClick(event) {
-            const button = event.target;
-            const rect = button.getBoundingClientRect();
-            const clickX = event.clientX - rect.left;
-            const buttonWidth = rect.width;
-
-            if (clickX < buttonWidth / 3) {
-                goToPage('pageD');
-            } else if (clickX < 2 * buttonWidth / 3) {
-                goToPage('pageE');
-            } else {
-                goToPage('pageF');
-            }
-        }
 function reloadPage() {
     location.reload();  // 重新整理網頁
 }
-    </script>
+</script>
+
 </body>
 </html>
