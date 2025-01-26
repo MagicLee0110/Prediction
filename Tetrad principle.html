@@ -120,10 +120,10 @@
         }
 
         .select-buttons {
-            display: flex;
             flex-wrap: wrap;
             gap: 15px;
             margin-bottom: 20px;
+
         }
 
         .select-buttons button {
@@ -135,6 +135,7 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
 	    font-size: 1.2em; /* 增加字體大小 */
+    	    margin-bottom: 15px;  /* 設置每個按鈕下方的間距 */
         }
 
         .select-buttons button.selected {
@@ -167,7 +168,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-	    margin: 20px
+	    margin: 20px;
 }
 
 /* 隱藏按鈕 */
@@ -185,11 +186,11 @@ button.hidden {
             <button id="btn1" onclick="selectButton(1)">撲克牌</button>
             <button id="btn2" onclick="selectButton(2)">手機</button>
             <button id="btn3" onclick="selectButton(3)">錢包</button>
-            <button id="btn4" onclick="selectButton(4)">鑰匙</button>
+            <button id="btn4" onclick="selectButton(4)">鑰匙</button><br>
             <button id="btn5" onclick="selectButton(5)">水</button>
             <button id="btn6" onclick="selectButton(6)">水杯</button>
             <button id="btn7" onclick="selectButton(7)">硬幣</button>
-            <button id="btn8" onclick="selectButton(8)">衛生紙</button>
+            <button id="btn8" onclick="selectButton(8)">衛生紙</button><br>
             <button id="btn9" onclick="selectButton(9)">筆</button>
             <button id="btn10" onclick="selectButton(10)">口罩</button>
             <button id="btn11" onclick="selectButton(11)">眼鏡</button>
