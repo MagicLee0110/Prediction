@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>雙重預言</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+      text-align: center;
+    }
+
+    .container {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+      color: #f7f7f7;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      font-size: 1em;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    input[type="text"]:focus {
+      background-color: #e0e0e0;
+    }
+
+    button {
+      padding: 12px 20px;
+      font-size: 1.1em;
+      background-color: #ff5722;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e64a19;
+    }
+
+    #error {
+      color: #ff3d00;
+      margin-top: 10px;
+      font-size: 1em;
+    }
+
+    #videoContainer {
+      display: none;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 id="passwordTitle">請輸入密碼</h1>
+    <div id="passwordInputContainer">
+      <input type="text" id="password" placeholder="輸入密碼" />
+      <button onclick="checkPassword()">提交</button>
+      <p id="error"></p>
+    </div>
+    <div id="videoContainer">
+      <h2>預言影片</h2>
+      <video id="videoPlayer" controls>
+        <source id="videoSource" type="video/mp4" />
+        您的瀏覽器不支援影片播放。
+      </video>
+    </div>
+  </div>
+
+  <script>
+    let attemptCount = 0;
+    let correctPassword = '';
+    let movieFileName = '';
+    
+    function checkPassword() {
+      const password = document.getElementById('password').value;
+      const errorElement = document.getElementById('error');
+      
+      // 密碼驗證邏輯
+      attemptCount++;
+      
+      if (attemptCount === 3) {
+        correctPassword = password; // 第三次密碼設定為正確密碼
+        movieFileName = getMovieFileName(password); // 根據密碼決定影片
+        showVideo(movieFileName); // 顯示影片
+      } else if (attemptCount > 3) {
+        errorElement.innerHTML = '您已經嘗試超過三次，請刷新頁面再試。';
+        return;
+      } else {
+        errorElement.innerHTML = '密碼錯誤，請再試一次。';
+      }
+      
+      // 重設密碼框
+      document.getElementById('password').value = '';
+    }
+
+    function getMovieFileName(password) {
+      const passwordLength = password.length;
+      const uniqueDigits = new Set(password.split('')).size;
+
+      // 根據規則來判斷影片名稱
+      if (passwordLength === 2) {
+        if (password[0] === password[1]) { // 兩位數相同
+          return parseInt(password[0]) % 2 === 0 ? '紅心J.mp4' : '黑桃J.mp4';
+        } else { // 兩位數不同
+          return parseInt(password[0]) % 2 === 0 ? '方塊J.mp4' : '梅花J.mp4';
+        }
+      } else if (passwordLength === 3) {
+        if (uniqueDigits === 1) { // 三位數相同
+          return parseInt(password[0]) % 2 === 0 ? '紅心Q.mp4' : '黑桃Q.mp4';
+        } else { // 三位數不同
+          return parseInt(password[0]) % 2 === 0 ? '方塊Q.mp4' : '梅花Q.mp4';
+        }
+      } else if (passwordLength === 4) {
+        if (uniqueDigits === 1) { // 四位數相同
+          return parseInt(password[0]) % 2 === 0 ? '紅心K.mp4' : '黑桃K.mp4';
+        } else { // 四位數不同
+          return parseInt(password[0]) % 2 === 0 ? '方塊K.mp4' : '梅花K.mp4';
+        }
+      }
+    }
+
+    function showVideo(movieFileName) {
+      // 隱藏「請輸入密碼」標題
+      document.getElementById('passwordTitle').style.display = 'none';
+      document.getElementById('passwordInputContainer').style.display = 'none';
+      document.getElementById('videoContainer').style.display = 'block';
+      const videoSource = document.getElementById('videoSource');
+      videoSource.src = movieFileName; // 設定影片來源
+      document.getElementById('videoPlayer').load();
+    }
+  </script>
+</body>
+</html>
