@@ -9,12 +9,13 @@
     <h1 id="direction">請翻轉手機</h1>
 
     <script>
-        // 檢查瀏覽器是否需要請求權限
+        // 檢查是否需要請求權限
         if (typeof DeviceOrientationEvent.requestPermission === 'function') {
             DeviceOrientationEvent.requestPermission()
                 .then(response => {
                     if (response === 'granted') {
-                        // 使用者授權後啟用翻轉偵測
+                        console.log('權限授予成功');
+                        // 啟用翻轉偵測
                         window.addEventListener("deviceorientation", handleOrientation);
                     } else {
                         alert('權限被拒絕，無法偵測翻面動作');
@@ -23,11 +24,14 @@
                 .catch(console.error);
         } else {
             // 在不需要權限的設備上，直接啟用
+            console.log('不需要額外授權，直接啟用');
             window.addEventListener("deviceorientation", handleOrientation);
         }
 
         // 處理方向偵測
         function handleOrientation(event) {
+            console.log(event); // 確認是否有數據輸出
+
             var alpha = event.alpha; // 旋轉角度
             var beta = event.beta;   // 傾斜角度
             var gamma = event.gamma; // 側向角度
