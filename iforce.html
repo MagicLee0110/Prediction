@@ -9,14 +9,32 @@
     <h1 id="direction">請翻轉手機</h1>
 
     <script>
-        window.addEventListener("deviceorientation", function(event) {
+        // 檢查瀏覽器是否需要請求權限
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+                .then(response => {
+                    if (response === 'granted') {
+                        // 使用者授權後啟用翻轉偵測
+                        window.addEventListener("deviceorientation", handleOrientation);
+                    } else {
+                        alert('權限被拒絕，無法偵測翻面動作');
+                    }
+                })
+                .catch(console.error);
+        } else {
+            // 在不需要權限的設備上，直接啟用
+            window.addEventListener("deviceorientation", handleOrientation);
+        }
+
+        // 處理方向偵測
+        function handleOrientation(event) {
             var alpha = event.alpha; // 旋轉角度
-            var beta = event.beta; // 傾斜角度
+            var beta = event.beta;   // 傾斜角度
             var gamma = event.gamma; // 側向角度
 
             var directionText = "";
 
-            // 檢測方向
+            // 根據手機的角度顯示翻轉方向
             if (beta > 45) {
                 directionText = "上";
             } else if (beta < -45) {
@@ -29,7 +47,7 @@
 
             // 更新顯示
             document.getElementById("direction").innerText = directionText;
-        });
+        }
     </script>
 </body>
 </html>
