@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>手機翻面偵測</title>
+</head>
+<body>
+    <h1 id="direction">請翻轉手機</h1>
+
+    <script>
+        window.addEventListener("deviceorientation", function(event) {
+            var alpha = event.alpha; // 旋轉角度
+            var beta = event.beta; // 傾斜角度
+            var gamma = event.gamma; // 側向角度
+
+            var directionText = "";
+
+            // 檢測方向
+            if (beta > 45) {
+                directionText = "上";
+            } else if (beta < -45) {
+                directionText = "下";
+            } else if (gamma > 45) {
+                directionText = "右";
+            } else if (gamma < -45) {
+                directionText = "左";
+            }
+
+            // 更新顯示
+            document.getElementById("direction").innerText = directionText;
+        });
+    </script>
+</body>
+</html>
