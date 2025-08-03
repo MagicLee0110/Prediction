@@ -141,19 +141,19 @@
         if (password[0] === password[1]) { // 兩位數相同
           return parseInt(password[0]) % 2 === 0 ? '黑桃J.mp4' : '梅花J.mp4';
         } else { // 兩位數不同
-          return parseInt(password[0]) % 2 === 0 ? '紅心J.mp4' : '方塊J.mp4';
+          return parseInt(password[0]) % 2 === 0 ? '方塊J.mp4' : '紅心J.mp4';
         }
       } else if (passwordLength === 3) {
         if (uniqueDigits === 1) { // 三位數相同
           return parseInt(password[0]) % 2 === 0 ? '黑桃Q.mp4' : '梅花Q.mp4';
         } else { // 三位數不同
-          return parseInt(password[0]) % 2 === 0 ? '紅心Q.mp4' : '方塊Q.mp4';
+          return parseInt(password[0]) % 2 === 0 ? '方塊Q.mp4' : '紅心Q.mp4';
         }
       } else if (passwordLength === 4) {
         if (uniqueDigits === 1) { // 四位數相同
           return parseInt(password[0]) % 2 === 0 ? '黑桃K.mp4' : '梅花K.mp4';
         } else { // 四位數不同
-          return parseInt(password[0]) % 2 === 0 ? '紅心K.mp4' : '方塊K.mp4';
+          return parseInt(password[0]) % 2 === 0 ? '方塊K.mp4' : '紅心K.mp4';
         }
       }
     }
@@ -170,4 +170,5 @@
   </script>
 </body>
 </html>
+
 
